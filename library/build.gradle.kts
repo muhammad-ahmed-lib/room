@@ -37,9 +37,9 @@ dependencies {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = "com.github.<muhammad-ahmed-lib>" // JitPack requires this exact format
+            groupId = "com.github.muhammad-ahmed-lib" // JitPack requires this exact format
             artifactId = "roomx"
-            version = "1.0.4" // bump this per release/tag
+            version = "1.0.6" // bump this per release/tag
 
             afterEvaluate {
                 from(components["release"])
