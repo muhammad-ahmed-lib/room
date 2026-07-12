@@ -29,79 +29,15 @@ class and bump a version number.
 
 `settings.gradle.kts`:
 ```kotlin
-include(":app")
-include(":library")
+   maven { url=uri("https://jitpack.io") }
 ```
 
 `app/build.gradle.kts`:
 ```kotlin
 dependencies {
-    implementation(project(":library"))
+    implementation("com.github.muhammad-ahmed-lib:room:1.0.6")
 }
 ```
-
-**JVM target consistency — important**
-
-Every module (app, library, any feature module) must use the *same*
-`sourceCompatibility` / `targetCompatibility`. A mismatch (e.g. library on 17,
-app on 11) produces:
-```
-Cannot inline bytecode built with JVM target 17 into bytecode that is being
-built with JVM target 11.
-```
-Fix: set the same version everywhere, e.g.
-```kotlin
-compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-```
-
-**Recommended stable plugin versions** (avoid AGP alpha/preview builds —
-they introduce built-in-Kotlin conflicts and other undocumented DSL changes):
-```kotlin
-plugins {
-    id("com.android.application") version "8.7.2" apply false
-    id("com.android.library") version "8.7.2" apply false
-    id("org.jetbrains.kotlin.android") version "2.0.21" apply false
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.21" apply false
-}
-```
-`kotlin.android` and `kotlin.plugin.compose` must be the **same** Kotlin
-version — mismatched versions between them cause compiler errors.
-
-`library/build.gradle.kts` — note `targetSdk` does **not** exist for library
-modules (only for the `application` module):
-```kotlin
-plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-}
-
-android {
-    namespace = "com.roomx"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 21
-        // no targetSdk here
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-}
-
-dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-}
-```
-
 ---
 
 ## 2. Defining an Entity

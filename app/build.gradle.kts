@@ -45,4 +45,6 @@ dependencies {
 
 
     implementation(project(":library"))
+
+    implementation("com.github.muhammad-ahmed-lib:room:1.0.6")
 }
